@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif">
+  <!-- 背景 -->
+  <rect width="800" height="400" fill="#fafaf7" rx="12"/>
+
+  <!-- ステップ1: 過去データ -->
+  <rect x="30" y="140" width="150" height="120" rx="10" fill="#218bff" fill-opacity="0.12" stroke="#218bff" stroke-width="2"/>
+  <text x="105" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="#218bff">過去データ</text>
+  <text x="105" y="210" text-anchor="middle" font-size="12" fill="#57606a">成約：〇 / ✕</text>
+  <text x="105" y="228" text-anchor="middle" font-size="12" fill="#57606a">顧客属性</text>
+  <text x="105" y="246" text-anchor="middle" font-size="12" fill="#57606a">提案内容</text>
+
+  <!-- 矢印1 -->
+  <line x1="182" y1="200" x2="248" y2="200" stroke="#57606a" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="248,194 260,200 248,206" fill="#57606a"/>
+  <text x="221" y="188" text-anchor="middle" font-size="11" fill="#57606a">入力</text>
+
+  <!-- ステップ2: 学習 -->
+  <rect x="262" y="140" width="140" height="120" rx="10" fill="#218bff" fill-opacity="0.18" stroke="#218bff" stroke-width="2.5"/>
+  <text x="332" y="188" text-anchor="middle" font-size="14" font-weight="700" fill="#218bff">学習</text>
+  <text x="332" y="210" text-anchor="middle" font-size="12" fill="#57606a">パターンを</text>
+  <text x="332" y="228" text-anchor="middle" font-size="12" fill="#57606a">抽出</text>
+
+  <!-- 矢印2 -->
+  <line x1="404" y1="200" x2="468" y2="200" stroke="#57606a" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="468,194 480,200 468,206" fill="#57606a"/>
+  <text x="442" y="188" text-anchor="middle" font-size="11" fill="#57606a">生成</text>
+
+  <!-- ステップ3: モデル -->
+  <rect x="482" y="120" width="150" height="160" rx="10" fill="#218bff" fill-opacity="0.22" stroke="#218bff" stroke-width="2.5"/>
+  <text x="557" y="168" text-anchor="middle" font-size="14" font-weight="700" fill="#218bff">モデル</text>
+  <text x="557" y="192" text-anchor="middle" font-size="12" fill="#57606a">学習済みの</text>
+  <text x="557" y="210" text-anchor="middle" font-size="12" fill="#57606a">判断ロジック</text>
+  <text x="557" y="232" text-anchor="middle" font-size="11" fill="#57606a">(ブラックボックス</text>
+  <text x="557" y="248" text-anchor="middle" font-size="11" fill="#57606a">または決定木 等)</text>
+
+  <!-- 矢印3 (下に新データ) -->
+  <!-- 新データから下に入力 -->
+  <rect x="640" y="60" width="130" height="80" rx="10" fill="#1a7f37" fill-opacity="0.12" stroke="#1a7f37" stroke-width="2"/>
+  <text x="705" y="95" text-anchor="middle" font-size="14" font-weight="700" fill="#1a7f37">新データ</text>
+  <text x="705" y="116" text-anchor="middle" font-size="12" fill="#57606a">未知の案件</text>
+
+  <line x1="660" y1="142" x2="620" y2="175" stroke="#1a7f37" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="615,169 622,180 626,168" fill="#1a7f37"/>
+  <text x="650" y="162" text-anchor="middle" font-size="11" fill="#1a7f37">入力</text>
+
+  <!-- 予測出力 -->
+  <rect x="640" y="260" width="130" height="80" rx="10" fill="#cf222e" fill-opacity="0.12" stroke="#cf222e" stroke-width="2"/>
+  <text x="705" y="296" text-anchor="middle" font-size="14" font-weight="700" fill="#cf222e">予測結果</text>
+  <text x="705" y="318" text-anchor="middle" font-size="12" fill="#57606a">成約確率 82%</text>
+
+  <line x1="620" y1="225" x2="660" y2="258" stroke="#cf222e" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="655,252 665,262 666,250" fill="#cf222e"/>
+  <text x="650" y="248" text-anchor="middle" font-size="11" fill="#cf222e">出力</text>
+
+  <!-- タイトル -->
+  <text x="400" y="370" text-anchor="middle" font-size="13" fill="#57606a">図：教師あり学習の流れ（過去データ → 学習 → モデル → 新データに予測）</text>
+</svg>

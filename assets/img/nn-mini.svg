@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif">
+  <!-- 背景 -->
+  <rect width="600" height="400" fill="#fafaf7" rx="12"/>
+
+  <!-- 層ラベル -->
+  <text x="90" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#8250df">入力層</text>
+  <text x="300" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#8250df">隠れ層</text>
+  <text x="510" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#8250df">出力層</text>
+
+  <!-- エッジ（入力→隠れ）thin lines -->
+  <!-- 入力ノード: x=90, y=100,170,240,310 -->
+  <!-- 隠れノード: x=300, y=120,195,270 -->
+  <g stroke="#8250df" stroke-width="1" stroke-opacity="0.35" fill="none">
+    <!-- from 100 -->
+    <line x1="118" y1="100" x2="272" y2="120"/>
+    <line x1="118" y1="100" x2="272" y2="195"/>
+    <line x1="118" y1="100" x2="272" y2="270"/>
+    <!-- from 170 -->
+    <line x1="118" y1="170" x2="272" y2="120"/>
+    <line x1="118" y1="170" x2="272" y2="195"/>
+    <line x1="118" y1="170" x2="272" y2="270"/>
+    <!-- from 240 -->
+    <line x1="118" y1="240" x2="272" y2="120"/>
+    <line x1="118" y1="240" x2="272" y2="195"/>
+    <line x1="118" y1="240" x2="272" y2="270"/>
+    <!-- from 310 -->
+    <line x1="118" y1="310" x2="272" y2="120"/>
+    <line x1="118" y1="310" x2="272" y2="195"/>
+    <line x1="118" y1="310" x2="272" y2="270"/>
+  </g>
+
+  <!-- エッジ（隠れ→出力）強め -->
+  <!-- 出力ノード: x=510, y=150,255 -->
+  <g stroke="#8250df" stroke-width="1.5" stroke-opacity="0.5" fill="none">
+    <line x1="328" y1="120" x2="482" y2="150"/>
+    <line x1="328" y1="120" x2="482" y2="255"/>
+    <line x1="328" y1="195" x2="482" y2="150"/>
+    <line x1="328" y1="195" x2="482" y2="255"/>
+    <line x1="328" y1="270" x2="482" y2="150"/>
+    <line x1="328" y1="270" x2="482" y2="255"/>
+  </g>
+
+  <!-- 入力ノード（4個） -->
+  <g fill="#8250df" fill-opacity="0.15" stroke="#8250df" stroke-width="2">
+    <circle cx="90" cy="100" r="26"/>
+    <circle cx="90" cy="170" r="26"/>
+    <circle cx="90" cy="240" r="26"/>
+    <circle cx="90" cy="310" r="26"/>
+  </g>
+  <!-- 入力ラベル -->
+  <text x="90" y="97" text-anchor="middle" font-size="11" fill="#8250df">x₁</text>
+  <text x="90" y="117" text-anchor="middle" font-size="10" fill="#57606a">スキル</text>
+  <text x="90" y="167" text-anchor="middle" font-size="11" fill="#8250df">x₂</text>
+  <text x="90" y="187" text-anchor="middle" font-size="10" fill="#57606a">年齢</text>
+  <text x="90" y="237" text-anchor="middle" font-size="11" fill="#8250df">x₃</text>
+  <text x="90" y="257" text-anchor="middle" font-size="10" fill="#57606a">給与</text>
+  <text x="90" y="307" text-anchor="middle" font-size="11" fill="#8250df">x₄</text>
+  <text x="90" y="327" text-anchor="middle" font-size="10" fill="#57606a">経験年</text>
+
+  <!-- 隠れノード（3個） -->
+  <g fill="#8250df" fill-opacity="0.22" stroke="#8250df" stroke-width="2.5">
+    <circle cx="300" cy="120" r="28"/>
+    <circle cx="300" cy="195" r="28"/>
+    <circle cx="300" cy="270" r="28"/>
+  </g>
+  <text x="300" y="116" text-anchor="middle" font-size="12" font-weight="700" fill="#8250df">h₁</text>
+  <text x="300" y="191" text-anchor="middle" font-size="12" font-weight="700" fill="#8250df">h₂</text>
+  <text x="300" y="266" text-anchor="middle" font-size="12" font-weight="700" fill="#8250df">h₃</text>
+
+  <!-- 出力ノード（2個） -->
+  <g fill="#cf222e" fill-opacity="0.18" stroke="#cf222e" stroke-width="2.5">
+    <circle cx="510" cy="150" r="30"/>
+    <circle cx="510" cy="255" r="30"/>
+  </g>
+  <text x="510" y="146" text-anchor="middle" font-size="11" font-weight="700" fill="#cf222e">成約</text>
+  <text x="510" y="162" text-anchor="middle" font-size="10" fill="#cf222e">82%</text>
+  <text x="510" y="251" text-anchor="middle" font-size="11" font-weight="700" fill="#cf222e">不成約</text>
+  <text x="510" y="267" text-anchor="middle" font-size="10" fill="#cf222e">18%</text>
+
+  <!-- 重みラベル（代表的な1本に注記） -->
+  <text x="195" y="148" text-anchor="middle" font-size="11" fill="#57606a" transform="rotate(-10 195 148)">重み w</text>
+
+  <!-- 説明文 -->
+  <text x="300" y="375" text-anchor="middle" font-size="13" fill="#57606a">図：3層ニューラルネット。各エッジが「重み（weight）」を持ち、伝播を調整する</text>
+</svg>

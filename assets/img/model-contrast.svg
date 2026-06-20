@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif">
+  <title>既存ML予測モデルと埋め込み類似度モデルの対比</title>
+  <desc>左：自社過去成約データで自前学習したML予測モデル。右：汎用コーパスで事前学習済みの埋め込みモデル。どちらも機械学習。</desc>
+
+  <text x="400" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2328">どちらも「機械学習モデル」 — 学習の出どころが違うだけ</text>
+
+  <!-- 左：自前学習 -->
+  <g>
+    <rect x="40" y="70" width="340" height="380" rx="12"
+          fill="#218bff" fill-opacity="0.08" stroke="#218bff" stroke-width="2"/>
+    <text x="210" y="100" text-anchor="middle" font-size="15" font-weight="700" fill="#0a5cc1">既存ML予測モデル</text>
+    <text x="210" y="120" text-anchor="middle" font-size="12" fill="#0a5cc1">自前学習タイプ</text>
+
+    <!-- データ -->
+    <rect x="70" y="150" width="120" height="80" rx="8" fill="#ffffff" stroke="#218bff" stroke-width="1.5"/>
+    <text x="130" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2328">自社過去データ</text>
+    <text x="130" y="196" text-anchor="middle" font-size="11" fill="#57606a">成約／NG 履歴</text>
+    <text x="130" y="214" text-anchor="middle" font-size="11" fill="#57606a">（ノイズ混入）</text>
+
+    <!-- 矢印 -->
+    <path d="M 200 190 L 240 190" stroke="#57606a" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+
+    <!-- モデル -->
+    <rect x="245" y="150" width="110" height="80" rx="8" fill="#218bff" fill-opacity="0.2" stroke="#218bff" stroke-width="1.5"/>
+    <text x="300" y="180" text-anchor="middle" font-size="12" font-weight="700" fill="#0a5cc1">予測モデル</text>
+    <text x="300" y="200" text-anchor="middle" font-size="11" fill="#1f2328">成約確率を出力</text>
+
+    <!-- 特徴 -->
+    <g transform="translate(70,260)">
+      <text x="0" y="0" font-size="12" font-weight="700" fill="#1f2328">特徴</text>
+      <text x="0" y="22" font-size="11" fill="#1f2328">・過去結果からしか学べない</text>
+      <text x="0" y="42" font-size="11" fill="#1f2328">・データ品質に成否が依存</text>
+      <text x="0" y="62" font-size="11" fill="#1f2328">・ノウハウは「教え込む」必要</text>
+      <text x="0" y="82" font-size="11" fill="#1f2328">・新規領域はコールドスタート</text>
+      <text x="0" y="102" font-size="11" fill="#cf222e">・ノイズに弱い（本章の論点）</text>
+    </g>
+  </g>
+
+  <!-- 右：事前学習活用 -->
+  <g>
+    <rect x="420" y="70" width="340" height="380" rx="12"
+          fill="#8250df" fill-opacity="0.08" stroke="#8250df" stroke-width="2"/>
+    <text x="590" y="100" text-anchor="middle" font-size="15" font-weight="700" fill="#5c2fa6">埋め込み類似度モデル</text>
+    <text x="590" y="120" text-anchor="middle" font-size="12" fill="#5c2fa6">事前学習活用タイプ</text>
+
+    <!-- 事前学習データ -->
+    <rect x="450" y="150" width="120" height="80" rx="8" fill="#ffffff" stroke="#8250df" stroke-width="1.5"/>
+    <text x="510" y="174" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2328">汎用コーパス</text>
+    <text x="510" y="192" text-anchor="middle" font-size="11" fill="#57606a">Web/書籍など</text>
+    <text x="510" y="210" text-anchor="middle" font-size="11" fill="#57606a">大量テキスト</text>
+
+    <!-- 矢印 -->
+    <path d="M 580 190 L 620 190" stroke="#57606a" stroke-width="2" fill="none" marker-end="url(#arrow2)"/>
+
+    <!-- モデル -->
+    <rect x="625" y="150" width="110" height="80" rx="8" fill="#8250df" fill-opacity="0.2" stroke="#8250df" stroke-width="1.5"/>
+    <text x="680" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#5c2fa6">埋め込みモデル</text>
+    <text x="680" y="196" text-anchor="middle" font-size="11" fill="#1f2328">意味のベクトル</text>
+    <text x="680" y="214" text-anchor="middle" font-size="11" fill="#1f2328">を出力</text>
+
+    <!-- 特徴 -->
+    <g transform="translate(450,260)">
+      <text x="0" y="0" font-size="12" font-weight="700" fill="#1f2328">特徴</text>
+      <text x="0" y="22" font-size="11" fill="#1f2328">・事前学習の汎用知識を借りられる</text>
+      <text x="0" y="42" font-size="11" fill="#1f2328">・自社成約履歴の品質に依存しない</text>
+      <text x="0" y="62" font-size="11" fill="#1f2328">・ノウハウは物差し（タクソノミー）</text>
+      <text x="0" y="82" font-size="11" fill="#1f2328">　で教え込める</text>
+      <text x="0" y="102" font-size="11" fill="#1a7f37">・コールドスタートに強い</text>
+    </g>
+  </g>
+
+  <!-- 共通の括り -->
+  <text x="400" y="478" text-anchor="middle" font-size="12" fill="#57606a">いずれも「データから関係を学んだモデル」＝広い意味で機械学習</text>
+
+  <defs>
+    <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+  </defs>
+</svg>

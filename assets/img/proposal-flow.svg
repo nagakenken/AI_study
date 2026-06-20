@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif">
+  <title>クライアント提案フロー</title>
+  <desc>データの濁り発見から、仮説提示、代替手法提案、PoCまでの流れ</desc>
+
+  <text x="400" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2328">提案フロー：データの濁りから次の打ち手まで</text>
+
+  <!-- Step1 -->
+  <g>
+    <rect x="40" y="80" width="170" height="100" rx="10" fill="#cf222e" fill-opacity="0.10" stroke="#cf222e" stroke-width="2"/>
+    <text x="125" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#9d1620">STEP 1</text>
+    <text x="125" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">データが濁る</text>
+    <text x="125" y="152" text-anchor="middle" font-size="11" fill="#1f2328">既存モデルが</text>
+    <text x="125" y="168" text-anchor="middle" font-size="11" fill="#1f2328">精度を出せない</text>
+  </g>
+
+  <!-- 矢印 -->
+  <path d="M 215 130 L 245 130" stroke="#57606a" stroke-width="2" fill="none" marker-end="url(#fa1)"/>
+
+  <!-- Step2 -->
+  <g>
+    <rect x="250" y="80" width="170" height="100" rx="10" fill="#d4a72c" fill-opacity="0.14" stroke="#d4a72c" stroke-width="2"/>
+    <text x="335" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6a14">STEP 2</text>
+    <text x="335" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">仮説</text>
+    <text x="335" y="152" text-anchor="middle" font-size="11" fill="#1f2328">ノイズ起因で</text>
+    <text x="335" y="168" text-anchor="middle" font-size="11" fill="#1f2328">教師あり学習が不適</text>
+  </g>
+
+  <path d="M 425 130 L 455 130" stroke="#57606a" stroke-width="2" fill="none" marker-end="url(#fa1)"/>
+
+  <!-- Step3 -->
+  <g>
+    <rect x="460" y="80" width="170" height="100" rx="10" fill="#218bff" fill-opacity="0.12" stroke="#218bff" stroke-width="2"/>
+    <text x="545" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#0a5cc1">STEP 3</text>
+    <text x="545" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">代替手法を提案</text>
+    <text x="545" y="152" text-anchor="middle" font-size="11" fill="#1f2328">タクソノミー+</text>
+    <text x="545" y="168" text-anchor="middle" font-size="11" fill="#1f2328">ベクトル類似度</text>
+  </g>
+
+  <path d="M 635 130 L 665 130" stroke="#57606a" stroke-width="2" fill="none" marker-end="url(#fa1)"/>
+
+  <!-- Step4 -->
+  <g>
+    <rect x="670" y="80" width="100" height="100" rx="10" fill="#1a7f37" fill-opacity="0.14" stroke="#1a7f37" stroke-width="2"/>
+    <text x="720" y="108" text-anchor="middle" font-size="12" font-weight="700" fill="#0f5524">STEP 4</text>
+    <text x="720" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#1f2328">PoC</text>
+    <text x="720" y="152" text-anchor="middle" font-size="11" fill="#1f2328">小規模検証</text>
+    <text x="720" y="168" text-anchor="middle" font-size="11" fill="#1f2328">で効果測定</text>
+  </g>
+
+  <!-- 下段：各STEPの中身 -->
+  <g>
+    <rect x="40" y="240" width="170" height="200" rx="10" fill="#ffffff" stroke="#cf222e" stroke-width="1.2"/>
+    <text x="55" y="265" font-size="11" font-weight="700" fill="#9d1620">観察</text>
+    <text x="55" y="290" font-size="11" fill="#1f2328">・NGの中に</text>
+    <text x="55" y="308" font-size="11" fill="#1f2328">　外的要因が混入</text>
+    <text x="55" y="332" font-size="11" fill="#1f2328">・組み合わせ起因の</text>
+    <text x="55" y="350" font-size="11" fill="#1f2328">　NGが見分けにくい</text>
+    <text x="55" y="374" font-size="11" fill="#1f2328">・精度が頭打ち</text>
+    <text x="55" y="404" font-size="11" font-weight="700" fill="#9d1620">クライアント</text>
+    <text x="55" y="422" font-size="11" font-weight="700" fill="#9d1620">の不信感</text>
+  </g>
+
+  <g>
+    <rect x="250" y="240" width="170" height="200" rx="10" fill="#ffffff" stroke="#d4a72c" stroke-width="1.2"/>
+    <text x="265" y="265" font-size="11" font-weight="700" fill="#8a6a14">論点整理</text>
+    <text x="265" y="290" font-size="11" fill="#1f2328">・ラベルノイズに</text>
+    <text x="265" y="308" font-size="11" fill="#1f2328">　教師あり学習は弱い</text>
+    <text x="265" y="332" font-size="11" fill="#1f2328">・「予測する」のではなく</text>
+    <text x="265" y="350" font-size="11" fill="#1f2328">　「近さを測る」へ</text>
+    <text x="265" y="374" font-size="11" fill="#1f2328">・問題設定の組み替え</text>
+  </g>
+
+  <g>
+    <rect x="460" y="240" width="170" height="200" rx="10" fill="#ffffff" stroke="#218bff" stroke-width="1.2"/>
+    <text x="475" y="265" font-size="11" font-weight="700" fill="#0a5cc1">提案内容</text>
+    <text x="475" y="290" font-size="11" fill="#1f2328">・事務派遣向け</text>
+    <text x="475" y="308" font-size="11" fill="#1f2328">　スキルタクソノミー</text>
+    <text x="475" y="332" font-size="11" fill="#1f2328">・既存ルールを再利用</text>
+    <text x="475" y="356" font-size="11" fill="#1f2328">・ESCO/O*NET参考</text>
+    <text x="475" y="380" font-size="11" fill="#1f2328">・JD×CVを埋め込みで</text>
+    <text x="475" y="398" font-size="11" fill="#1f2328">　類似度比較</text>
+  </g>
+
+  <g>
+    <rect x="670" y="240" width="100" height="200" rx="10" fill="#ffffff" stroke="#1a7f37" stroke-width="1.2"/>
+    <text x="685" y="265" font-size="11" font-weight="700" fill="#0f5524">検証</text>
+    <text x="685" y="290" font-size="11" fill="#1f2328">・過去案件で</text>
+    <text x="685" y="308" font-size="11" fill="#1f2328">　ヒット率測定</text>
+    <text x="685" y="332" font-size="11" fill="#1f2328">・営業との</text>
+    <text x="685" y="350" font-size="11" fill="#1f2328">　体感比較</text>
+    <text x="685" y="380" font-size="11" fill="#1f2328">・ROI判断</text>
+  </g>
+
+  <defs>
+    <marker id="fa1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#57606a"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第6章 ケーススタディ｜AI入門</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-logo">AI入門 / for Newcomers</a>
+      <nav class="site-nav">
+        <a href="../index.html">目次</a>
+        <a href="../chapters/01-overview.html">全体像</a>
+        <a href="../chapters/06-case-study.html">ケース</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>第6章 ケーススタディ：データが濁ったとき何を提案するか</h1>
+    <div class="chapter-meta">
+      <span class="badge">Chapter 06</span>
+      <span>読了目安 約12分</span>
+    </div>
+
+    <div class="summary-card">
+      <h3>この章の要点</h3>
+      <ul>
+        <li>教師データにノイズが混ざると、教師あり学習の予測モデルは精度が頭打ちになる</li>
+        <li>「予測する」のではなく「過去事例との近さを測る」へ問題設定を組み替える</li>
+        <li>既存ルールベースをスキルタクソノミーの素材として再利用し、JD×CVをベクトル類似度で比較する</li>
+      </ul>
+    </div>
+
+    <h2>1. 状況設定</h2>
+    <p>
+      あるクライアントは事務派遣を主力とする人材会社で、求人（JD）と人材プロフィール（CV）のマッチングを長年ルールベースで運用してきました。次のステップとして、過去の成約／不成約データを教師に、機械学習の<span class="term" data-tip="成約／不成約のような正解ラベル付きデータでモデルを学習させる方式">教師あり学習（supervised learning）</span>で成約予測モデルを開発しました。
+    </p>
+    <p>
+      ところが、精度がどうしても上がらない。原因を掘ると、NG（不成約）データの内訳に問題があることが分かりました。
+    </p>
+    <ul>
+      <li><strong>真のNG</strong>：スキルや経験が要件に合っていない（本来モデルが学ぶべき情報）</li>
+      <li><strong>外的要因によるNG</strong>：家庭事情、タイミング、急な辞退（モデルでは予測しようがない）</li>
+      <li><strong>組み合わせ起因のNG</strong>：単独要素は問題ないが、複数条件の重なりで不成立になった</li>
+    </ul>
+    <p>
+      これらが同じ「NG」ラベルで混在しています。営業現場の肌感では「このマッチは妥当だったが客先都合で流れた」と説明できても、データ上は区別できません。クライアントは「学習データを増やしているのに、なぜ良くならないのか」とAIへの不信感を募らせています。
+    </p>
+
+    <figure class="wide-figure">
+      <img src="../assets/img/noisy-data.svg" alt="特徴空間にプロットされた成約OK群と、真のNGとノイズNGが混在するNG群。理想の境界線が描けない様子を示す散布図" />
+      <figcaption>図6-1 ノイズが混入した教師データ。OK群と分離不能なノイズNGが混ざり、教師あり学習では境界が引けない</figcaption>
+    </figure>
+
+    <h2>2. なぜ教師あり学習はラベルノイズに弱いか</h2>
+    <p>
+      教師あり学習は「正解ラベルが信頼できる」という前提で動きます。モデルは入力と正解のあいだの規則性を探し、新しい入力に対して正解を予測します。
+    </p>
+    <p>
+      ところがラベルが信頼できないと、モデルは「ノイズも含めた規則」を学んでしまう。極端にいえば、家庭事情というモデルからは見えない理由までスキル不一致のせいだと誤解する。結果として、本来NGになるはずのないマッチまでNG扱いし始め、現場の感覚と乖離していきます。
+    </p>
+
+    <div class="callout warn">
+      <p class="callout-title">⚠ ラベルノイズの怖さ</p>
+      <p>
+        データ量を増やせばノイズも増えます。「サンプルを足せば精度が上がる」というのは、ラベルが正しい場合の話です。ラベルが濁ったまま量だけ増やしても、頭打ちのラインがほぼ変わらないことが知られています。
+      </p>
+    </div>
+
+    <h2>3. 重要な整理：どちらも「機械学習モデル」</h2>
+    <p>
+      この章の核心はここです。既存の予測モデルと、これから提案するベクトル類似度モデルは、<strong>どちらも機械学習モデル</strong>です。違うのは「何で学習しているか」だけ。
+    </p>
+
+    <figure class="wide-figure">
+      <img src="../assets/img/model-contrast.svg" alt="左：自社過去成約データで自前学習したML予測モデル。右：汎用コーパスで事前学習済みの埋め込みモデル。どちらも機械学習モデルだが学習の出どころが異なる。" />
+      <figcaption>図6-2 自前学習タイプと事前学習活用タイプの対比。両者は対立する技術ではなく、学習データの出どころが違うだけ</figcaption>
+    </figure>
+
+    <table class="compare">
+      <thead>
+        <tr><th style="width:24%">観点</th><th>既存ML予測モデル</th><th>埋め込み類似度モデル</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>学習に使ったデータ</td>
+          <td>自社の過去成約／NG履歴</td>
+          <td>汎用テキストコーパス（Web、書籍など）</td>
+        </tr>
+        <tr>
+          <td>学んでいる中身</td>
+          <td>「自社で成約したパターン」</td>
+          <td>「言葉と言葉の意味の近さ」</td>
+        </tr>
+        <tr>
+          <td>新しい知見の入れ方</td>
+          <td>追加データで再学習</td>
+          <td>物差し（タクソノミー）を作り変える</td>
+        </tr>
+        <tr>
+          <td>自社データ品質の影響</td>
+          <td class="bad">直接効く</td>
+          <td class="good">間接的</td>
+        </tr>
+        <tr>
+          <td>過去結果のない領域</td>
+          <td class="bad">扱えない</td>
+          <td class="good">汎用知識で扱える</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout info">
+      <p class="callout-title">ここを取り違えると提案が通らない</p>
+      <p>
+        「ML予測モデルがダメだから、AIをやめてベクトルにする」ではない。両方ともAIで、両方とも機械学習。「学習データの出どころを切り替えて、自社データのノイズに耐性をつける」が正しい説明です。クライアントには「乗り換え」ではなく「設計の組み替え」として伝えます。
+      </p>
+    </div>
+
+    <h2>4. 「予測する」から「近さを測る」へ</h2>
+    <p>
+      問題設定そのものを書き換えるのが鍵です。
+    </p>
+    <ul>
+      <li><strong>従来</strong>：このJDとこのCVは、成約するか／しないかを<em>予測する</em></li>
+      <li><strong>提案</strong>：このJDとこのCVは、要件と経験という意味でどれくらい<em>近いか</em>を測る</li>
+    </ul>
+    <p>
+      「近さを測る」設計には、ノイズ混入したNGラベルが直接効きません。営業の意思決定材料は「近さスコア」になり、客先都合などの外的要因は別の運用ロジックで処理できます。
+    </p>
+
+    <div class="callout tip">
+      <p class="callout-title">問題設定の組み替えは新人の武器</p>
+      <p>
+        既存モデルを延命するのではなく、「そもそも解くべき問いを変える」提案ができると、コンサルとしての評価が一段上がる。技術選定の前に問題設定を疑うのが、ベテランがやっていることです。
+      </p>
+    </div>
+
+    <h2>5. 提案アプローチ：簡易スキルタクソノミーを物差しにする</h2>
+    <p>
+      具体策は、<span class="term" data-tip="スキルや属性を体系的に分類した辞書のような体系。ベクトル比較の物差しになる">スキルタクソノミー（skill taxonomy）</span>を物差しにして、JDとCVをベクトル化し、類似度で比較することです。
+    </p>
+    <p>
+      事務派遣領域に絞った簡易版から始めます。たとえば次のような区分けです。
+    </p>
+    <ul>
+      <li><strong>業務カテゴリ</strong>：経理、人事、総務、営業事務、貿易事務 ほか</li>
+      <li><strong>具体タスク</strong>：仕訳入力、月次決算、給与計算、勤怠管理、請求書発行 ほか</li>
+      <li><strong>使用ツール</strong>：Excel、SAP、勘定奉行、freee、kintone ほか</li>
+      <li><strong>業界文脈</strong>：製造業経理、商社の貿易事務、IT企業の総務 ほか</li>
+    </ul>
+
+    <h3>既存ルールベースを再利用する</h3>
+    <p>
+      ここで効くのが、過去にクライアントが作り込んだ<a href="02-rulebase.html">ルールベース</a>の条件分岐ロジックです。長年積み上げたルール群には、現場の暗黙知が詰まっている。「経理経験ありで、月次決算を1人で回せて、SAP経験があれば、製造業経理に強い」のような条件は、そのままタクソノミーのノードと関連辞書に翻訳できます。
+    </p>
+    <p>
+      ルールを捨てるのではなく、構造化された知識として吸い上げる。これがクライアントへの説得力にもなります。「御社が10年かけて作ったルールを、次世代の物差しとして活かします」と言える。
+    </p>
+
+    <div class="callout info">
+      <p class="callout-title">国際標準のスキル分類も参考になる</p>
+      <p>
+        ゼロから作る必要はありません。<a href="https://esco.ec.europa.eu/" target="_blank" rel="noopener">ESCO（欧州委員会のスキル分類）</a>、<a href="https://www.onetonline.org/" target="_blank" rel="noopener">O*NET（米労働省）</a>、<a href="https://lightcast.io/" target="_blank" rel="noopener">Lightcast</a>などが、事務職を含む詳細なスキル体系を公開しています。日本市場向けに再編して使うのが現実解です。
+      </p>
+    </div>
+
+    <h3>JDとCVをベクトル化する</h3>
+    <p>
+      タクソノミーの各ノードに、関連語（同義語・関連スキル）の集合を持たせます。JDとCVのテキストを、汎用の<a href="05-nlp-vector.html">埋め込みモデル</a>でベクトル化し、タクソノミー上のノードに紐づける。最後に、JDベクトルとCVベクトルの<span class="term" data-tip="2つのベクトルが向く方向の近さ。1に近いほど意味が似ている">コサイン類似度</span>を計算します。
+    </p>
+
+    <h2>6. ML予測 vs ベクトル類似度：観点別の比較</h2>
+
+    <table class="compare">
+      <thead>
+        <tr><th style="width:26%">観点</th><th>ML予測（自前学習）</th><th>ベクトル類似度（事前学習活用）</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>説明性</td>
+          <td class="bad">「なぜNG？」に答えにくい</td>
+          <td class="good">「どのスキル軸で何点」と分解可能</td>
+        </tr>
+        <tr>
+          <td>自社データ品質への耐性</td>
+          <td class="bad">ラベルノイズの影響を直接受ける</td>
+          <td class="good">タクソノミーが緩衝層になる</td>
+        </tr>
+        <tr>
+          <td>コールドスタート</td>
+          <td class="bad">過去データのない領域は扱えない</td>
+          <td class="good">事前学習の汎用知識でカバー</td>
+        </tr>
+        <tr>
+          <td>更新容易性</td>
+          <td>再学習にデータ蓄積と計算コスト</td>
+          <td class="good">タクソノミーを編集すれば即反映</td>
+        </tr>
+        <tr>
+          <td>ノウハウの反映方法</td>
+          <td>教師データに「正解」を増やす</td>
+          <td>タクソノミー設計と関連語登録</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>7. 業界トレンド：意味的な近さへ</h2>
+    <p>
+      人材マッチングや採用テックの領域では、ここ数年で次の流れが定着しつつあります。
+    </p>
+    <ul>
+      <li>従来のキーワード一致（「経理」という単語が両方にある）から、ベクトルによる意味的な近さ（「仕訳業務」と「日次会計処理」が近いと分かる）への移行</li>
+      <li>フランスの<a href="https://gojob.com/" target="_blank" rel="noopener">Gojob</a>など、欧州の派遣プラットフォーマーがスキル埋め込みを軸に置く設計を採用</li>
+      <li><span class="term" data-tip="スキルを軸にデータを集約・分析する領域。採用、配置、リスキリングなどに応用される">スキルインテリジェンス</span>領域で、スキルタクソノミー構築を差別化要素とする企業が増加</li>
+    </ul>
+    <p>
+      一方で、タクソノミー整備にはコストがかかります。ROI観点で見送る、あるいは外部ベンダーのタクソノミーをそのまま使う企業も多い。自前構築は「データを資産化したい」という意思決定とセットになります。
+    </p>
+
+    <h2>8. クライアントへの説明スクリプト例</h2>
+    <p>
+      新人がそのまま使える話法として整理します。
+    </p>
+
+    <div class="callout info">
+      <p class="callout-title">説明スクリプト</p>
+      <p>
+        「現在の予測モデルは、過去の成約／NG履歴から学習しています。ただ、NGデータの中には、家庭事情やタイミングといった、本来モデルが学ぶべきでない理由が一定割合混ざっています。データ量を増やしても、この種のノイズがあるとモデルは頭打ちになります。」
+      </p>
+      <p>
+        「そこで提案したいのは、問題設定の組み替えです。『成約するかを予測する』のではなく、『JDとCVが、スキル要件としてどれくらい近いかを測る』設計に変えます。物差しになるのが、御社が10年かけて作ってこられたルールベースのロジックです。これを構造化した辞書（スキルタクソノミー）に変換し、最新の埋め込み技術で意味的な近さを計算します。」
+      </p>
+      <p>
+        「この方式なら、過去のNG履歴のノイズに引きずられず、営業のかたが『なぜこのマッチは近いと判定したか』も説明可能です。タクソノミー自体は、現場のノウハウを足し引きすれば即座に反映できます。まずは小規模なPoCで、過去案件のヒット率を現行モデルと比較するところから始められます。」
+      </p>
+    </div>
+
+    <h2>9. 提案フロー</h2>
+
+    <figure class="wide-figure">
+      <img src="../assets/img/proposal-flow.svg" alt="STEP1データが濁る、STEP2仮説、STEP3代替手法提案、STEP4 PoCの4段階フロー" />
+      <figcaption>図6-3 提案フロー。現状の課題から仮説、代替手法、PoCまでの流れ</figcaption>
+    </figure>
+
+    <p>
+      提案の組み立ては「現象→原因仮説→代替設計→検証計画」の4段で整えるとブレません。新人のうちは、各STEPで「クライアントに見せる1枚」を意識して資料化するとよい。
+    </p>
+
+    <h2>10. 限界と次の一手</h2>
+    <p>
+      この提案も万能ではない。次のような限界を、最初から伝えておくのが誠実な姿勢です。
+    </p>
+
+    <div class="callout warn">
+      <p class="callout-title">⚠ ベクトル類似度の限界</p>
+      <ul>
+        <li>意味が近いからといって成約するとは限らない（近さ＝成約ではない）</li>
+        <li>タクソノミー設計の品質に成果が依存する。粗い辞書では精度が出ない</li>
+        <li>類似度スコアの「閾値」は結局現場で調整が要る</li>
+        <li>業界が変わるとタクソノミーの作り直しが必要</li>
+      </ul>
+    </div>
+
+    <p>
+      次の一手としては、ベクトル類似度をベースに、外的要因（客先都合、辞退率など）を別軸で扱う運用ルールを併設するハイブリッド構成が現実的です。<a href="02-rulebase.html">ルールベース</a>と機械学習の両方を、それぞれの強みが活きる場所に配置する。これが「現役の使い分け」です。
+    </p>
+
+    <h2>11. 章のまとめ</h2>
+    <ol>
+      <li>データが濁っているとき、教師あり学習の予測モデルを延命するより、問題設定の組み替えが効く</li>
+      <li>既存ML予測と埋め込み類似度は、どちらも機械学習。学習データの出どころが違うだけ</li>
+      <li>既存ルールベースは捨てずに、スキルタクソノミーの素材として再利用する</li>
+      <li>提案は「現象→仮説→代替設計→PoC」の4段で組み立てる</li>
+      <li>新しい方式にも限界がある。最初から限界を伝えるのが信頼につながる</li>
+    </ol>
+
+    <section class="further">
+      <h2>もっと知りたい人へ</h2>
+      <ul>
+        <li>
+          <a href="https://esco.ec.europa.eu/" target="_blank" rel="noopener">ESCO / European Skills, Competences, Qualifications and Occupations</a>
+          — 欧州委員会が公開するスキル・職業分類。事務職のスキル粒度を見るのに最適
+        </li>
+        <li>
+          <a href="https://www.onetonline.org/" target="_blank" rel="noopener">O*NET OnLine</a>
+          — 米労働省の職業情報データベース。タスク・スキル・知識・ツールが整理されている
+        </li>
+        <li>
+          <a href="https://lightcast.io/" target="_blank" rel="noopener">Lightcast / Open Skills</a>
+          — 民間のスキルタクソノミー。労働市場データと結びついた商用例
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2007.08199" target="_blank" rel="noopener">arXiv / Learning with Noisy Labels (survey)</a>
+          — ラベルノイズが教師あり学習に与える影響と対策の研究サーベイ
+        </li>
+        <li>
+          <a href="https://huggingface.co/blog/getting-started-with-embeddings" target="_blank" rel="noopener">Hugging Face / Getting Started with Embeddings</a>
+          — 埋め込みの基本と、類似度検索の実装イメージ
+        </li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="05-nlp-vector.html" class="prev"><span class="nav-label">← PREV</span>第5章 NLP・ベクトル化・類似度</a>
+      <a href="../index.html" class="next"><span class="nav-label">NEXT →</span>目次に戻る</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">© 2026 AI入門コンテンツ</footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

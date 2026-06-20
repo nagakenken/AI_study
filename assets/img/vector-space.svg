@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 500" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif">
+  <!-- 背景 -->
+  <rect width="700" height="500" fill="#fafaf7" rx="12"/>
+
+  <!-- タイトル -->
+  <text x="350" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1a7f37">ベクトル空間での単語の距離</text>
+
+  <!-- 軸 -->
+  <line x1="80" y1="430" x2="640" y2="430" stroke="#57606a" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="80" y1="430" x2="80" y2="60" stroke="#57606a" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 軸の矢印 -->
+  <polygon points="640,424 652,430 640,436" fill="#57606a"/>
+  <polygon points="74,60 80,48 86,60" fill="#57606a"/>
+  <!-- 軸ラベル -->
+  <text x="658" y="434" font-size="12" fill="#57606a">次元1</text>
+  <text x="84" y="48" font-size="12" fill="#57606a">次元2</text>
+  <text x="350" y="464" text-anchor="middle" font-size="12" fill="#57606a">（実際は数百〜数千次元。ここでは2次元で可視化）</text>
+
+  <!-- グループA: 経理・会計（左上、緑ゾーン） -->
+  <circle cx="170" cy="150" r="60" fill="#1a7f37" fill-opacity="0.07" stroke="#1a7f37" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="170" y="100" text-anchor="middle" font-size="11" fill="#1a7f37" font-style="italic">意味が近い</text>
+
+  <!-- 経理ベクトル矢印 -->
+  <line x1="80" y1="430" x2="148" y2="162" stroke="#1a7f37" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="144,156 152,148 158,160" fill="#1a7f37"/>
+  <!-- 経理ノード -->
+  <circle cx="155" cy="152" r="22" fill="#1a7f37" fill-opacity="0.18" stroke="#1a7f37" stroke-width="2"/>
+  <text x="155" y="156" text-anchor="middle" font-size="13" font-weight="700" fill="#1a7f37">経理</text>
+
+  <!-- 会計ベクトル矢印 -->
+  <line x1="80" y1="430" x2="198" y2="140" stroke="#1a7f37" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="194,134 202,126 208,138" fill="#1a7f37"/>
+  <!-- 会計ノード -->
+  <circle cx="205" cy="130" r="22" fill="#1a7f37" fill-opacity="0.18" stroke="#1a7f37" stroke-width="2"/>
+  <text x="205" y="134" text-anchor="middle" font-size="13" font-weight="700" fill="#1a7f37">会計</text>
+
+  <!-- 経理↔会計の近さを示す両矢印 -->
+  <line x1="174" y1="148" x2="189" y2="136" stroke="#1a7f37" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="148" y="124" text-anchor="middle" font-size="11" fill="#1a7f37">近い</text>
+
+  <!-- グループB: 営業・マーケ（右下、青ゾーン） -->
+  <circle cx="480" cy="310" r="65" fill="#218bff" fill-opacity="0.07" stroke="#218bff" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="520" y="375" text-anchor="middle" font-size="11" fill="#218bff" font-style="italic">意味が近い</text>
+
+  <!-- 営業ベクトル矢印 -->
+  <line x1="80" y1="430" x2="436" y2="330" stroke="#218bff" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="432,324 440,316 446,328" fill="#218bff"/>
+  <!-- 営業ノード -->
+  <circle cx="446" cy="320" r="22" fill="#218bff" fill-opacity="0.18" stroke="#218bff" stroke-width="2"/>
+  <text x="446" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#218bff">営業</text>
+
+  <!-- マーケベクトル矢印 -->
+  <line x1="80" y1="430" x2="498" y2="298" stroke="#218bff" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="494,292 502,284 508,296" fill="#218bff"/>
+  <!-- マーケノード -->
+  <circle cx="508" cy="288" r="30" fill="#218bff" fill-opacity="0.18" stroke="#218bff" stroke-width="2"/>
+  <text x="508" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#218bff">マーケ</text>
+  <text x="508" y="300" text-anchor="middle" font-size="10" fill="#218bff">ティング</text>
+
+  <!-- 営業↔マーケの近さを示す両矢印 -->
+  <line x1="463" y1="308" x2="488" y2="298" stroke="#218bff" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="490" y="330" text-anchor="middle" font-size="11" fill="#218bff">近い</text>
+
+  <!-- グループ間の距離を示す（経理 ↔ 営業） -->
+  <line x1="177" y1="152" x2="424" y2="322" stroke="#57606a" stroke-width="1" stroke-dasharray="8,4" stroke-opacity="0.6"/>
+  <text x="300" y="244" text-anchor="middle" font-size="12" fill="#57606a" transform="rotate(30 300 244)">遠い（意味が異なる）</text>
+
+  <!-- コサイン類似度の説明: 角度を示す円弧 -->
+  <path d="M 130,430 A 55,55 0 0,0 108,376" fill="none" stroke="#1a7f37" stroke-width="1.5"/>
+  <text x="90" y="388" font-size="11" fill="#1a7f37">θ小</text>
+  <text x="88" y="402" font-size="10" fill="#1a7f37">（類似度高）</text>
+
+  <path d="M 130,430 A 55,55 0 0,0 176,380" fill="none" stroke="#218bff" stroke-width="1.5"/>
+  <text x="160" y="398" font-size="11" fill="#218bff">θ大</text>
+
+  <!-- 凡例 -->
+  <rect x="550" y="60" width="130" height="100" rx="8" fill="white" stroke="#d0d7de" stroke-width="1"/>
+  <text x="615" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#57606a">凡例</text>
+  <circle cx="572" cy="98" r="6" fill="#1a7f37" fill-opacity="0.3" stroke="#1a7f37" stroke-width="1.5"/>
+  <text x="584" y="102" font-size="11" fill="#57606a">経理・会計系</text>
+  <circle cx="572" cy="120" r="6" fill="#218bff" fill-opacity="0.3" stroke="#218bff" stroke-width="1.5"/>
+  <text x="584" y="124" font-size="11" fill="#57606a">営業・マーケ系</text>
+  <line x1="566" y1="142" x2="580" y2="142" stroke="#57606a" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="584" y="146" font-size="11" fill="#57606a">距離（遠い）</text>
+
+  <!-- 注釈: θの説明 -->
+  <text x="350" y="450" text-anchor="middle" font-size="12" fill="#57606a">コサイン類似度：ベクトル間の角度θが小さいほど「意味が近い」と判定する</text>
+</svg>

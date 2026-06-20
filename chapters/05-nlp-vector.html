@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第5章 NLP・ベクトル化・類似度｜AI入門</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-logo">AI入門 / for Newcomers</a>
+      <nav class="site-nav">
+        <a href="../index.html">目次</a>
+        <a href="../chapters/01-overview.html">全体像</a>
+        <a href="../chapters/06-case-study.html">ケース</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>第5章 NLP・ベクトル化・類似度</h1>
+    <div class="chapter-meta">
+      <span class="badge">Chapter 05</span>
+      <span>読了目安 約8分</span>
+    </div>
+
+    <div class="summary-card">
+      <h3>この章の要点</h3>
+      <ul>
+        <li>テキストを数値ベクトルに変換する「埋め込み」により、言葉の意味の近さをコンピュータが計算できるようになる</li>
+        <li>コサイン類似度を使えば「経理」と「会計」が近く、「経理」と「営業」が遠いと定量的に判定できる</li>
+        <li>この技術は「求人票と職務経歴書の意味的なマッチング」に直接応用でき、第6章のケーススタディへ続く</li>
+      </ul>
+    </div>
+
+    <h2>なぜ文字列を数値にするのか</h2>
+    <p>
+      コンピュータは数値しか扱えません。「経理経験あり」という文字列を直接比較しても、「決算業務の経験あり」が同じ意味だとは判定できません。<span class="term" data-tip="自然言語処理（Natural Language Processing）。コンピュータが人間の言語を理解・生成・解析するための技術分野">NLP（自然言語処理）</span>では、テキストを数値の列（ベクトル）に変換することで、意味の計算を可能にします。
+    </p>
+    <p>
+      この変換を<span class="term" data-tip="テキストや単語を多次元の数値ベクトルに変換すること。意味的に近い言葉ほど近いベクトルになるよう学習される">埋め込み（embedding）</span>と呼びます。適切に学習された埋め込みでは、「意味が似ている言葉ほど、ベクトル空間で近い位置に配置される」という性質が生まれます。
+    </p>
+
+    <h2>キービジュアル：ベクトル空間での距離</h2>
+
+    <figure class="wide-figure">
+      <img src="../assets/img/vector-space.svg" alt="2次元ベクトル空間に経理・会計・営業・マーケティングの単語をプロットした図。経理と会計が近く、営業とマーケティングが近い" style="max-width:100%;height:auto;" />
+      <figcaption>図5-1 ベクトル空間での単語の配置イメージ。意味が近い語はベクトルの向きが近く（コサイン類似度が高く）、遠い語は角度が大きい</figcaption>
+    </figure>
+
+    <p>
+      実際の埋め込みは数百〜数千次元ですが、概念は同じです。「経理」と「会計」はベクトル空間で近い位置に、「経理」と「営業」は遠い位置に置かれます。この性質を利用すれば、単なる文字列一致を超えた「意味的な近さ」を測れます。
+    </p>
+
+    <h2>コサイン類似度：方向で近さを測る</h2>
+    <p>
+      2つのベクトルの「近さ」を測る代表的な指標が<span class="term" data-tip="2つのベクトルのなす角度のコサイン値で類似度を測る指標。値は-1〜1で、1に近いほど類似している">コサイン類似度（cosine similarity）</span>です。値は−1から1の範囲で、1に近いほど「同じ方向を向いている＝意味が近い」ことを示します。
+    </p>
+
+    <div class="callout info">
+      <p class="callout-title">コサイン類似度の直感</p>
+      <p>
+        長さが違っても「方向」が同じなら類似度は高くなります。「少し経理の経験あり」と「豊富な経理の経験あり」は、ベクトルの長さは違っても方向は近いため、高い類似度が得られます。文章の長さによる影響を受けにくい点が実務でも便利です。
+      </p>
+    </div>
+
+    <p>
+      もう一つの指標は<span class="term" data-tip="ベクトル間の直線距離で類似度を測る指標。距離が近いほど類似している。大きさの違いも影響する">ユークリッド距離（Euclidean distance）</span>です。文章の絶対的な「長さ」（情報量）も考慮したい場合に使います。テキストマッチングでは、コサイン類似度が使われることの方が多いです。
+    </p>
+
+    <h2>有名な例：「王 − 男 + 女 ≈ 女王」</h2>
+    <p>
+      埋め込みモデルの特性を象徴する有名な例として「王（king）− 男（man）+ 女（woman）≈ 女王（queen）」があります。これは、ベクトル演算が単語の意味関係を捉えていることを示しています。「王」から「男性性」のベクトルを引き、「女性性」のベクトルを足すと、「女王」に近いベクトルが得られるというものです。
+    </p>
+    <p>
+      この性質は職種マッチングにも活きます。「事務」から「一般事務」のベクトルを引き、「専門性」を加えれば、「経理事務」に近づくような演算が（近似的に）成立します。
+    </p>
+
+    <h2>古典的手法：TF-IDF</h2>
+    <p>
+      埋め込みモデルが普及する前の代表的な手法が<span class="term" data-tip="Term Frequency-Inverse Document Frequency。単語の出現頻度と希少性から重要度スコアを計算する古典的な手法">TF-IDF（Term Frequency-Inverse Document Frequency）</span>です。文書中で頻繁に出現し、かつ他の文書では珍しい単語を重要とみなしてスコア化します。
+    </p>
+
+    <table class="compare">
+      <thead>
+        <tr>
+          <th style="width:28%">観点</th>
+          <th>TF-IDF（古典）</th>
+          <th>埋め込みモデル（現代）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>意味の理解</td>
+          <td class="bad">単語の一致で判断。「経理」と「会計」は別単語として扱う</td>
+          <td class="good">意味的な近さを表現。「経理」と「会計」を近いベクトルで表せる</td>
+        </tr>
+        <tr>
+          <td>学習コスト</td>
+          <td class="good">事前学習不要。計算が軽い</td>
+          <td class="bad">大規模な事前学習が必要（ただし公開モデルを利用可能）</td>
+        </tr>
+        <tr>
+          <td>ゆらぎへの対応</td>
+          <td class="bad">表記ゆれ・類義語に弱い</td>
+          <td class="good">類義語・言い換えに強い</td>
+        </tr>
+        <tr>
+          <td>導入難易度</td>
+          <td class="good">数行のコードで動く</td>
+          <td>APIで手軽に使えるが、精度チューニングが必要な場合も</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>主な埋め込みモデル</h2>
+    <p>
+      現在は事前学習済みの埋め込みモデルをAPIとして利用できます。ゼロから学習させる必要はありません。代表的なものを整理します。
+    </p>
+    <ul>
+      <li><strong>Sentence-BERT（SBERT）</strong>：文（センテンス）レベルの埋め込みに特化したモデル。日本語版も公開されている</li>
+      <li><strong>OpenAI Embeddings API</strong>：<code>text-embedding-3-large</code>など。APIを叩くだけで高品質な埋め込みを取得できる</li>
+      <li><strong>Cohere Embeddings API</strong>：多言語対応に強みを持つ埋め込みAPI</li>
+    </ul>
+
+    <div class="callout tip">
+      <p class="callout-title">実務のポイント</p>
+      <p>
+        自社のドメイン知識（業界固有の用語、職種名の略称など）が埋め込みモデルに正しく表現されているとは限りません。「SE」が「Software Engineer」と「証券会社の社員」で意味が分かれる場合など、ファインチューニングや業界特化モデルの検討が必要になることがあります。
+      </p>
+    </div>
+
+    <h2 id="bridge-to-ch6">第6章への橋渡し：マッチングへの応用</h2>
+    <p>
+      ここまで学んだ技術を整理すると、「言葉の意味の近さを数値で測れる」という能力が手に入りました。これは<strong>求人票（JD）と職務経歴書（CV）のマッチング</strong>に直接応用できます。
+    </p>
+    <p>
+      求人票の要件テキストをベクトル化し、職務経歴書の経験テキストをベクトル化します。両者のコサイン類似度が高ければ「意味的に近いマッチ」と判定できます。「経理経験5年」という求人と「決算業務・仕訳処理を担当」という職務経歴は、文字列として一致しなくても、ベクトル空間では近い距離に配置されます。
+    </p>
+
+    <div class="callout info">
+      <p class="callout-title">第3章との接続：なぜ予測モデルではなく類似度か</p>
+      <p>
+        第3章で学んだ成約予測モデル（教師あり学習）は、ラベルノイズや外的要因の混入によって精度が出なくなることがあります。類似度マッチングは「過去の成否ラベル」に依存しません。代わりに「過去の成功事例テキスト」を物差しとして使い、新しい案件との近さを測ります。データの「汚染」を受けにくい構造です。
+      </p>
+    </div>
+
+    <p>
+      次章のケーススタディでは、この類似度マッチングを事務派遣領域の実業務に当てはめ、既存のルールベースロジックをスキルタクソノミーとして再活用する具体的なアプローチを検討します。
+    </p>
+
+    <section class="further">
+      <h2>もっと知りたい人へ</h2>
+      <ul>
+        <li>
+          <a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener">arXiv / Word2Vec 原論文（Mikolov et al., 2013）</a>
+          — 「王 − 男 + 女 ≈ 女王」を示した単語埋め込みの先駆け研究。概要だけ読んでも単語ベクトルの直感が掴める
+        </li>
+        <li>
+          <a href="https://platform.openai.com/docs/guides/embeddings" target="_blank" rel="noopener">OpenAI / Embeddings ガイド</a>
+          — テキストの埋め込みAPIの使い方、類似度検索への応用例、コサイン類似度の実装例を公式ドキュメントで確認できる
+        </li>
+        <li>
+          <a href="https://docs.cohere.com/docs/embeddings" target="_blank" rel="noopener">Cohere / Embeddings ドキュメント</a>
+          — 多言語対応の埋め込みAPIの仕様と活用例。日本語テキストへの応用を検討する際に参照できる
+        </li>
+        <li>
+          <a href="https://sbert.net/" target="_blank" rel="noopener">Sentence-Transformers 公式サイト</a>
+          — 文レベル埋め込みのオープンソースライブラリ。日本語対応モデルのリストとサンプルコードを確認できる
+        </li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="04-dl-genai.html" class="prev"><span class="nav-label">← PREV</span>第4章 深層学習・生成AI</a>
+      <a href="06-case-study.html" class="next"><span class="nav-label">NEXT →</span>第6章 ケーススタディ</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">© 2026 AI入門コンテンツ</footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

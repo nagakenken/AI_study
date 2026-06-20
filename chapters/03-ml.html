@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第3章 機械学習｜AI入門</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-logo">AI入門 / for Newcomers</a>
+      <nav class="site-nav">
+        <a href="../index.html">目次</a>
+        <a href="../chapters/01-overview.html">全体像</a>
+        <a href="../chapters/06-case-study.html">ケース</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>第3章 機械学習</h1>
+    <div class="chapter-meta">
+      <span class="badge">Chapter 03</span>
+      <span>読了目安 約7分</span>
+    </div>
+
+    <div class="summary-card">
+      <h3>この章の要点</h3>
+      <ul>
+        <li>機械学習はデータからパターンを自動的に学ぶ仕組みで、教師あり・教師なし・強化学習の3種に大別される</li>
+        <li>「成約しやすい組み合わせ」の予測は教師あり学習の典型例だが、学習データの品質が精度を直接左右する</li>
+        <li>ゴミを入れたらゴミが出る（GIGO）——ラベルノイズや交絡因子がモデルを壊す仕組みを理解することが実務では特に重要</li>
+      </ul>
+    </div>
+
+    <h2>機械学習とは</h2>
+    <p>
+      <span class="term" data-tip="データから統計的なパターンを自動で学習し、未知の入力に対して予測や判断を行う技術の総称">機械学習（machine learning）</span>とは、人間がルールを書かずに、データから判断のパターンを自動で学ぶアプローチです。ルールベースが「if 年収500万円以上 then 承認」と書くのに対し、機械学習は「大量の過去データを見せ、承認パターンを自力で見つけさせる」という発想の転換です。
+    </p>
+    <p>
+      機械学習は大きく3つに分類できます。それぞれの特徴と使いどころを整理します。
+    </p>
+
+    <h2>3つの学習方式</h2>
+
+    <h3>教師あり学習（supervised learning）</h3>
+    <p>
+      <span class="term" data-tip="正解ラベル付きデータを使って学習する方式。入力と正解の対応を学ぶ">教師あり学習（supervised learning）</span>は、「入力」と「正解ラベル」のペアを大量に与え、その対応関係を学ばせる方法です。メールが「迷惑メール／正常」どちらかを人間がラベル付けしたデータを学習させれば、新しいメールを自動分類できるようになります。
+    </p>
+    <p>
+      代表的なタスクは2つあります。<span class="term" data-tip="数値を予測するタスク。成約率や売上金額の推定など">回帰（regression）</span>は数値を予測し、<span class="term" data-tip="カテゴリを判別するタスク。成約する／しないの二値分類など">分類（classification）</span>はカテゴリを判別します。「この案件の成約確率は何パーセントか」は回帰、「成約するかしないか」は分類です。
+    </p>
+
+    <figure class="wide-figure">
+      <img src="../assets/img/ml-supervised.svg" alt="教師あり学習の流れ：過去データから学習してモデルを作り、新データに予測する" style="max-width:100%;height:auto;" />
+      <figcaption>図3-1 教師あり学習の流れ。過去データでモデルを作り、未知の案件に予測を適用する</figcaption>
+    </figure>
+
+    <h3>教師なし学習（unsupervised learning）</h3>
+    <p>
+      <span class="term" data-tip="正解ラベルなしでデータの構造やパターンを発見する方式。クラスタリングや次元削減が代表的">教師なし学習（unsupervised learning）</span>は、正解ラベルを与えず、データの中から自力で構造やグループを発見します。顧客データを渡すと「購買頻度が高いグループ」「価格感度が高いグループ」などのセグメントを自動で作る<span class="term" data-tip="データを自動でグループ分けする手法。k-meansが有名">クラスタリング（clustering）</span>が代表例です。
+    </p>
+    <p>
+      正解が存在しない探索的な分析に向いています。「どんなパターンがあるか分からないが、まず構造を把握したい」という場面で活躍します。
+    </p>
+
+    <h3>強化学習（reinforcement learning）</h3>
+    <p>
+      <span class="term" data-tip="試行錯誤を通じて報酬を最大化する行動方針を学ぶ方式。AlphaGoや自動運転に応用">強化学習（reinforcement learning）</span>は、エージェントが環境と試行錯誤しながら、長期的な報酬を最大化する行動を学びます。囲碁AI（AlphaGo）やゲームAI、ロボット制御の分野で活用されています。ビジネスの現場での直接活用は限定的ですが、LLMの精度チューニングにも応用されています。
+    </p>
+
+    <table class="compare">
+      <thead>
+        <tr>
+          <th style="width:30%">方式</th>
+          <th>必要なもの</th>
+          <th>得意な場面</th>
+          <th>ビジネス例</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>教師あり学習</td>
+          <td>正解ラベル付きデータ</td>
+          <td class="good">予測・分類</td>
+          <td>成約予測、スパム検知、与信審査</td>
+        </tr>
+        <tr>
+          <td>教師なし学習</td>
+          <td>ラベルなしデータ</td>
+          <td class="good">構造発見・セグメント</td>
+          <td>顧客クラスタリング、異常検知</td>
+        </tr>
+        <tr>
+          <td>強化学習</td>
+          <td>環境と報酬設計</td>
+          <td class="good">逐次意思決定</td>
+          <td>広告入札最適化、ゲームAI</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>ケーススタディへの伏線：成約予測モデルの例</h2>
+    <p>
+      営業・人材サービス領域で「この組み合わせは成約しやすいか」を予測するモデルを作る場合、教師あり学習の分類タスクとして設計します。入力特徴量は「求人の職種・給与レンジ・立地」「求職者のスキル・年齢・希望条件」などです。過去の成約データにラベル（成約〇・不成約✕）を付けて学習させます。
+    </p>
+    <p>
+      しかしこのアプローチには落とし穴があります。それが次のセクションで扱うデータ品質の問題です。
+    </p>
+
+    <div class="callout tip">
+      <p class="callout-title">実務のポイント</p>
+      <p>
+        モデルの精度は、アルゴリズムの選択よりもデータの品質に大きく依存します。同じデータで複数のアルゴリズムを試して精度差が小さいなら、データ整備に時間を投じる方が効果的です。
+      </p>
+    </div>
+
+    <h2>データ品質の問題：GIGO（Garbage In, Garbage Out）</h2>
+    <p>
+      機械学習モデルは、学習データに含まれるパターンしか学べません。「<span class="term" data-tip="Garbage In, Garbage Out。質の低いデータを学習させれば、出力も質が低くなるという原則">GIGO（ゴミを入れたらゴミが出る）</span>」は、この限界を端的に表した格言です。データ品質の問題は大きく3種類に分けられます。
+    </p>
+
+    <h3>ラベルノイズ</h3>
+    <p>
+      <span class="term" data-tip="学習データの正解ラベルに誤りが混入した状態。モデルが誤ったパターンを学習する原因になる">ラベルノイズ（label noise）</span>は、正解ラベルに誤りが混ざっている状態です。成約データの入力漏れ、担当者の主観によるラベル付けのブレ、システム連携の不具合による誤記録などが原因です。ラベルが10%誤っていれば、モデルはその誤りを「正解」として学んでしまいます。
+    </p>
+
+    <h3>交絡因子の混入</h3>
+    <p>
+      <span class="term" data-tip="原因でも結果でもないが、両者と相関する変数。これが混入すると因果関係を誤って学習する">交絡因子（confounding factor）</span>とは、本来の原因とは無関係だが結果と相関してしまう変数のことです。たとえば「担当営業マンが優秀かどうか」という変数が学習データに入っていないと、その担当者が持つ案件の特性がモデルに「成約しやすい特徴」として誤って学習されます。
+    </p>
+
+    <h3>外的要因の混入</h3>
+    <p>
+      景気変動、競合の動向、パンデミックによる採用凍結——こうした外的な事象が「不成約」の原因になっているのに、学習データ上ではその案件の特徴が「不成約の原因」として記録されてしまいます。モデルは組み合わせの問題と外的要因の問題を区別できません。
+    </p>
+
+    <div class="callout warn">
+      <p class="callout-title">⚠ 第6章への重要な伏線</p>
+      <p>
+        「本来は悪くない組み合わせなのに、外的要因で不成約になった案件」と「本当に組み合わせが悪くて不成約になった案件」が学習データの中に混在すると、モデルは両者を区別できません。このラベルの濁りが、成約予測モデルの精度低下の核心的な原因です。第6章のケーススタディでは、この問題にどう対処するかを具体的に検討します。
+      </p>
+    </div>
+
+    <h2>機械学習の限界を知ること</h2>
+    <p>
+      機械学習は「データに存在するパターン」を学ぶ道具です。データにないパターンは学べません。また、学習データの分布と実運用データの分布がずれると精度が落ちます（<span class="term" data-tip="学習時と運用時でデータの統計的性質がずれる現象。モデルの精度劣化を引き起こす">分布シフト（distribution shift）</span>）。定期的な再学習と品質監視が不可欠です。
+    </p>
+    <p>
+      次章では、機械学習の中でも特に表現力が高い深層学習と、それを応用した生成AIについて整理します。
+    </p>
+
+    <section class="further">
+      <h2>もっと知りたい人へ</h2>
+      <ul>
+        <li>
+          <a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Google / Machine Learning Crash Course</a>
+          — Googleが無料公開する機械学習入門。教師あり学習の概念から実装例まで、視覚的に整理されている（英語）
+        </li>
+        <li>
+          <a href="https://scikit-learn.org/stable/user_guide.html" target="_blank" rel="noopener">scikit-learn / ユーザーガイド</a>
+          — Pythonの代表的な機械学習ライブラリの公式ガイド。3つの学習方式の分類と各アルゴリズムの整理に最適
+        </li>
+        <li>
+          <a href="https://www.soumu.go.jp/johotsusintokei/whitepaper/" target="_blank" rel="noopener">総務省 / 情報通信白書</a>
+          — AIと機械学習の普及動向、日本企業の活用事例を政府統計とともに把握できる
+        </li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="02-rulebase.html" class="prev"><span class="nav-label">← PREV</span>第2章 ルールベース</a>
+      <a href="04-dl-genai.html" class="next"><span class="nav-label">NEXT →</span>第4章 深層学習・生成AI</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">© 2026 AI入門コンテンツ</footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

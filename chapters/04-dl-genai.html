@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第4章 深層学習・生成AI｜AI入門</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-logo">AI入門 / for Newcomers</a>
+      <nav class="site-nav">
+        <a href="../index.html">目次</a>
+        <a href="../chapters/01-overview.html">全体像</a>
+        <a href="../chapters/06-case-study.html">ケース</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>第4章 深層学習・生成AI</h1>
+    <div class="chapter-meta">
+      <span class="badge">Chapter 04</span>
+      <span>読了目安 約6分</span>
+    </div>
+
+    <div class="summary-card">
+      <h3>この章の要点</h3>
+      <ul>
+        <li>深層学習は機械学習の一種であり、多層のニューラルネットで複雑なパターンを学ぶ</li>
+        <li>LLMや画像生成AIは「深層学習を用いた生成AIの一形態」として位置づけられる</li>
+        <li>入門段階では「何ができるか・何が苦手か」の把握が、詳細な仕組みよりも先に必要</li>
+      </ul>
+    </div>
+
+    <h2>包含関係を整理する</h2>
+    <p>
+      前章で学んだ機械学習の中に、<span class="term" data-tip="多層のニューラルネットワークを使った機械学習。画像・音声・テキストなどで人間を超える精度を達成した">深層学習（deep learning）</span>が位置づけられます。「深層学習 ⊂ 機械学習 ⊂ AI」という包含関係です。深層学習は機械学習の特定の手法であり、多層のニューラルネットワークによって複雑な表現を学習する点に特徴があります。
+    </p>
+    <p>
+      さらに、<span class="term" data-tip="テキスト・画像・音声などを新たに生成することができるAI。深層学習を基盤とするものがほとんど">生成AI（generative AI）</span>は、深層学習を応用して「新しいコンテンツを生み出す」機能を持つAIの総称です。ChatGPTのような<span class="term" data-tip="大量のテキストで事前学習した大規模な言語モデル。テキスト生成・要約・翻訳・対話などに活用される">LLM（Large Language Model）</span>も、Stable Diffusionのような画像生成AIも、この生成AIのカテゴリに入ります。
+    </p>
+
+    <div class="callout info">
+      <p class="callout-title">包含関係のまとめ</p>
+      <p>AI ⊃ 機械学習 ⊃ 深層学習 ⊃（深層学習を使った）生成AI の一部</p>
+      <p>「生成AIを使いこなす」とは、AIの特定のサブカテゴリを活用することです。生成AIを使っていても、機械学習・深層学習の基盤の上に立っています。</p>
+    </div>
+
+    <h2>ニューラルネットワークの直感</h2>
+    <p>
+      <span class="term" data-tip="人間の神経細胞（ニューロン）を模したノードと、重み付きの結合（エッジ）からなる計算グラフ">ニューラルネットワーク（neural network）</span>は、入力を受け取り、複数の層を経由して出力を返す計算の仕組みです。各層のノードは前の層の値に「重み（weight）」を掛けて合計し、<span class="term" data-tip="ニューロンの出力を決める変換関数。ReLUやシグモイド関数など。非線形性を加えることで複雑なパターンを学習できる">活性化関数（activation function）</span>を通じて次の層に伝えます。
+    </p>
+
+    <figure class="wide-figure">
+      <img src="../assets/img/nn-mini.svg" alt="3層ニューラルネットワークの概念図。入力層・隠れ層・出力層の3層とノード間の重み付きエッジ" style="max-width:100%;height:auto;" />
+      <figcaption>図4-1 ニューラルネットワークの概念図（3層）。各エッジに重みがあり、学習によって最適な重みが決まる</figcaption>
+    </figure>
+
+    <p>
+      学習の仕組みは「予測値と正解の誤差を計算し、誤差が小さくなるように重みを調整する」ことの繰り返しです（<span class="term" data-tip="誤差を逆方向に伝播させて各層の重みを調整する学習アルゴリズム">誤差逆伝播法（backpropagation）</span>）。これを何千・何百万回と繰り返すことで、モデルは精度を高めていきます。
+    </p>
+    <p>
+      「深層（deep）」とは、隠れ層が多いことを指します。層が深いほど抽象的な特徴を学べますが、学習に必要なデータ量と計算コストも増大します。
+    </p>
+
+    <h2>なぜ深層学習は強いのか</h2>
+    <p>
+      従来の機械学習では、エンジニアが「どの特徴量（feature）を入力するか」を手動で設計する必要がありました。深層学習は、この<span class="term" data-tip="予測に有効な特徴を人手で設計・選択する作業。深層学習では多くの場合これが不要になる">特徴量エンジニアリング（feature engineering）</span>を自動化しました。画像なら「エッジ → 輪郭 → 形状 → 物体」というように、有用な特徴を階層的に自力で学びます。
+    </p>
+    <p>
+      この性質により、テキスト・画像・音声・動画など、人間が特徴を言語化しにくいデータでも高精度な学習が可能になりました。
+    </p>
+
+    <h2>LLMとは何か</h2>
+    <p>
+      LLMは、インターネット上の膨大なテキストデータで<span class="term" data-tip="大量の汎用データで事前に訓練し、その後特定タスクに適応させる学習方式">事前学習（pretraining）</span>した大規模な深層学習モデルです。テキストの次の単語を予測するという単純なタスクを超大規模に繰り返すことで、言語の構造・知識・推論能力を獲得します。
+    </p>
+    <p>
+      ChatGPT（GPT-4）やClaude、Geminiはいずれもこの仕組みを基盤としています。入門段階でアーキテクチャの詳細（<span class="term" data-tip="LLMの中核をなすニューラルネットアーキテクチャ。自己注意機構（self-attention）で長距離の依存関係を学習する">Transformer</span>の仕組みなど）を深追いする必要はなく、「何ができるか・何が苦手か」を押さえる方が実務では先決です。
+    </p>
+
+    <table class="compare">
+      <thead>
+        <tr>
+          <th style="width:30%">モデル種別</th>
+          <th>できること</th>
+          <th>注意点・限界</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>LLM（テキスト生成）</td>
+          <td class="good">要約、翻訳、文章作成、Q&A、コード生成</td>
+          <td class="bad">事実の誤りを自信満々に述べる（<span class="term" data-tip="LLMが事実に反する内容を生成してしまう現象">幻覚（hallucination）</span>）</td>
+        </tr>
+        <tr>
+          <td>画像生成AI</td>
+          <td class="good">テキストから画像を生成、画像の編集・加工</td>
+          <td class="bad">細部の整合性（指の本数など）が崩れることがある</td>
+        </tr>
+        <tr>
+          <td>マルチモーダルAI</td>
+          <td class="good">画像＋テキストの同時処理、図の説明、OCR</td>
+          <td class="bad">複数モダリティを正確に紐づける難易度が高い</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>深層学習の限界も知る</h2>
+    <p>
+      深層学習は強力ですが、万能ではありません。学習に大量のデータと計算リソースが必要です。また、なぜその判断をしたかを人間が説明しにくい（<span class="term" data-tip="モデルの内部の判断過程が人間には見えにくい性質。規制対象業務では問題になることがある">ブラックボックス性</span>）という課題があります。金融・医療・法務などの高規制業務では、説明性を求められる場面で採用が難しくなります。
+    </p>
+    <p>
+      第3章で学んだデータ品質の問題は深層学習でも変わりません。むしろ、モデルが大きいほど学習データのバイアスを精巧に学んでしまうリスクがあります。
+    </p>
+
+    <div class="callout tip">
+      <p class="callout-title">実務のポイント</p>
+      <p>
+        「生成AIに頼めば何でもできる」という過信は危険です。LLMは「それらしい文章を生成する機械」です。事実確認・数値計算・最新情報の参照は、単独では信頼できません。人間によるレビューと組み合わせた活用設計が必須です。
+      </p>
+    </div>
+
+    <p>
+      次章では、テキストをベクトルとして扱うNLP技術に焦点を当てます。これは第6章のケーススタディで提案する代替アプローチの核心になります。
+    </p>
+
+    <section class="further">
+      <h2>もっと知りたい人へ</h2>
+      <ul>
+        <li>
+          <a href="https://jalammar.github.io/illustrated-transformer/" target="_blank" rel="noopener">Jay Alammar / The Illustrated Transformer</a>
+          — Transformerアーキテクチャを図解した定番記事。LLMの内部構造を視覚的に理解できる（英語）
+        </li>
+        <li>
+          <a href="https://www.deeplearning.ai/courses/deep-learning-specialization/" target="_blank" rel="noopener">deeplearning.ai / Deep Learning Specialization</a>
+          — Andrew Ng監修の深層学習コース。ニューラルネットの基礎から実装まで体系的に学べる（英語）
+        </li>
+        <li>
+          <a href="https://huggingface.co/learn/nlp-course/" target="_blank" rel="noopener">Hugging Face / NLP Course</a>
+          — Transformerを使ったNLPの実践的な入門コース。LLMや埋め込みモデルの扱い方を学べる（英語）
+        </li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="03-ml.html" class="prev"><span class="nav-label">← PREV</span>第3章 機械学習</a>
+      <a href="05-nlp-vector.html" class="next"><span class="nav-label">NEXT →</span>第5章 NLP・ベクトル化・類似度</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">© 2026 AI入門コンテンツ</footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

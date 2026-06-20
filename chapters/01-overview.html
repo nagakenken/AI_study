@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第1章 AIの全体像｜AI入門</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-logo">AI入門 / for Newcomers</a>
+      <nav class="site-nav">
+        <a href="../index.html">目次</a>
+        <a href="../chapters/01-overview.html">全体像</a>
+        <a href="../chapters/06-case-study.html">ケース</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>第1章 AIの全体像</h1>
+    <div class="chapter-meta">
+      <span class="badge">Chapter 01</span>
+      <span>読了目安 約6分</span>
+    </div>
+
+    <div class="summary-card">
+      <h3>この章の要点</h3>
+      <ul>
+        <li>AIは大きな傘で、その中にルールベースと機械学習が並ぶ。機械学習の中に深層学習があり、生成AIはその一部</li>
+        <li>「AI＝ChatGPT」ではない。判断を自動化する仕組みすべてがAI</li>
+        <li>手法ごとに向き不向きがある。データ量・説明性・コスト・用途で選ぶ</li>
+      </ul>
+    </div>
+
+    <h2>まず地図を描く</h2>
+    <p>
+      <span class="term" data-tip="Artificial Intelligence。人間の知的判断を機械に肩代わりさせる仕組みの総称">AI（Artificial Intelligence）</span>という言葉は、いまや生成AIと同義に使われることが多い。だが本来のAIはもっと広い概念です。判断を自動化する仕組みは、入り組んだルール集も、画像認識も、ChatGPTのような生成モデルも、ぜんぶAIの一部として整理できます。
+    </p>
+    <p>
+      クライアントと話すとき、この地図が頭に入っていると話が噛み合いやすくなります。「うちは生成AIを使いたい」と言われたとき、本当に必要なのが分類モデルだった、ということもあります。
+    </p>
+
+    <figure class="wide-figure">
+      <img src="../assets/img/ai-venn.svg" alt="AIの分類ベン図。AIの中に機械学習が含まれ、機械学習の中に深層学習、深層学習の一部が生成AI。機械学習内にNLPがある。ルールベースは機械学習と並列。" />
+      <figcaption>図1-1 AI分類のベン図。包含関係（AI ⊃ 機械学習 ⊃ 深層学習 ⊃ 生成AIの一部）と、ルールベースが並列に位置することを示す</figcaption>
+    </figure>
+
+    <p>
+      この図のポイントは三つです。
+    </p>
+    <ul>
+      <li><strong>ルールベースもAIである</strong>。機械学習の外、AIの傘の中に置かれる</li>
+      <li><strong>機械学習は深層学習を含み、深層学習の一部が生成AI</strong>。生成AIは深層学習の応用形</li>
+      <li><strong>NLP（自然言語処理）は領域名</strong>。手法ではなく「言語を扱う問題」のラベルで、機械学習の中の一区画として描かれる</li>
+    </ul>
+
+    <div class="callout info">
+      <p class="callout-title">補足：生成AIと機械学習の関係</p>
+      <p>
+        生成AIは、深層学習で作られた巨大な<span class="term" data-tip="大量テキストを学習した言語モデル。GPTやClaudeなどが代表">大規模言語モデル（LLM）</span>を中心に成り立っています。LLMは機械学習の手法で訓練されたモデルなので、生成AIは広義の機械学習に含まれる、と整理できます。
+      </p>
+    </div>
+
+    <h2>4つの分類を一枚で比較する</h2>
+    <p>
+      それぞれの手法を、現場で選ぶときに効く観点だけに絞って並べます。
+    </p>
+
+    <table class="compare">
+      <thead>
+        <tr>
+          <th style="width:18%">手法</th>
+          <th>必要なデータ量</th>
+          <th>説明性</th>
+          <th>コスト</th>
+          <th>向く用途</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ルールベース</strong></td>
+          <td>不要</td>
+          <td class="good">高い</td>
+          <td class="good">低い</td>
+          <td>法令・契約の判定、明確な条件分岐</td>
+        </tr>
+        <tr>
+          <td><strong>機械学習</strong></td>
+          <td>中〜多</td>
+          <td>中</td>
+          <td>中</td>
+          <td>需要予測、与信、レコメンド</td>
+        </tr>
+        <tr>
+          <td><strong>深層学習</strong></td>
+          <td class="bad">非常に多い</td>
+          <td class="bad">低い</td>
+          <td class="bad">高い</td>
+          <td>画像認識、音声認識、複雑な分類</td>
+        </tr>
+        <tr>
+          <td><strong>生成AI</strong></td>
+          <td>※事前学習済みを利用</td>
+          <td class="bad">低い</td>
+          <td>中（API利用時）</td>
+          <td>文章生成、要約、対話、検索拡張</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      生成AIの「必要なデータ量」は特殊です。<span class="term" data-tip="モデル提供者が大量データで先に学習を済ませた状態。利用側は追加学習をせず使える">事前学習（pre-training）</span>済みのモデルを借りる前提なので、利用側は学習データを用意しなくてよい。これは後の章で重要になります。
+    </p>
+
+    <div class="callout tip">
+      <p class="callout-title">クライアントとの会話で使えるひと言</p>
+      <p>
+        「AIといってもいくつか種類があって、目的によって向き不向きが分かれます」と切り出すと、漠然とした「AI導入したい」を具体化する糸口になります。とくに説明性が必要な業務（金融審査、医療、公的判断）では、深層学習よりルールベースや解釈しやすい機械学習が選ばれやすい、という現実を伝えると話が早い。
+      </p>
+    </div>
+
+    <h2>ルールベースもAIの一種</h2>
+    <p>
+      「AI＝機械学習」と思い込むと、現場の実態を見誤ります。実際の業務システムは、純粋な機械学習だけで動いていることは少なく、ルールベースの判定ロジックが大量に組み合わさっているのが普通です。
+    </p>
+    <p>
+      たとえば派遣業の案件マッチングシステムは、長年にわたって「この条件のときはこちらの案件を出す」というルールが積み上がっています。これも立派なAIです。<a href="06-case-study.html">第6章のケーススタディ</a>では、この既存ルール群を捨てずに次世代手法の土台として再利用するアプローチを扱います。
+    </p>
+
+    <h2>「機械学習」と「深層学習」の境目</h2>
+    <p>
+      機械学習は、データから関係を学んでモデルを作る手法群の総称です。古典的な手法（線形回帰、決定木、ランダムフォレスト など）と、ニューラルネットワークを多層に重ねた<span class="term" data-tip="多層ニューラルネットワークを使う機械学習。画像・音声・言語など複雑な入力で威力を発揮">深層学習（Deep Learning）</span>に分かれます。
+    </p>
+    <p>
+      深層学習は機械学習の中の一カテゴリです。違いをひと言でいえば「学習に必要なデータ量とマシンパワーが桁違いに多い代わりに、画像や言語のように複雑な入力を扱える」ことです。
+    </p>
+
+    <h2>生成AIの位置づけ</h2>
+    <p>
+      <span class="term" data-tip="新しいテキスト・画像・音声などを生成するAI。ChatGPT、Claude、Midjourneyなどが代表">生成AI（Generative AI）</span>は、深層学習の応用形のひとつです。なかでも、文章を生成するLLMが現在の主役です。
+    </p>
+    <p>
+      生成AIは「深層学習で作られたモデル」を「事前学習済みの状態で借りて使う」のが基本です。自社で巨大モデルをゼロから学習させるケースは稀で、APIや既存モデルを活用するのが現実的です。
+    </p>
+
+    <div class="callout warn">
+      <p class="callout-title">⚠ よくある混同</p>
+      <p>
+        「生成AIで予測モデルを作ってほしい」という依頼は、しばしば<strong>生成AI以外の機械学習</strong>を指しています。需要予測や離反予測のような数値タスクは、生成AIではなく古典的な機械学習や深層学習で扱うのが定石です。要件の翻訳が、新人にとって最初の関門になります。
+      </p>
+    </div>
+
+    <h2>NLP（自然言語処理）はどこに入るか</h2>
+    <p>
+      <span class="term" data-tip="Natural Language Processing。テキストや音声など人間の言葉を扱う領域名">NLP（自然言語処理 / Natural Language Processing）</span>は手法名ではなく、扱う対象（＝言葉）でくくった領域名です。NLPの中では古典的な機械学習、深層学習、生成AI、いずれも使われます。
+    </p>
+    <p>
+      第5章ではNLPの中核技術である<span class="term" data-tip="単語や文を数値ベクトルに変換し、意味の近さを距離で測れるようにした表現">埋め込み（embedding）</span>を扱います。これは第6章のケーススタディの土台になる重要技術です。
+    </p>
+
+    <h2>新人がまず押さえるべき3点</h2>
+    <ol>
+      <li><strong>地図を持つ</strong>。AIの中にルールベースと機械学習があり、機械学習の中に深層学習、その一部が生成AI。NLPは領域名</li>
+      <li><strong>「AI＝生成AI」ではない</strong>。依頼内容を翻訳できると提案の幅が広がる</li>
+      <li><strong>手法選びは「データ量・説明性・コスト・用途」の4軸</strong>。万能の手法はない</li>
+    </ol>
+
+    <section class="further">
+      <h2>もっと知りたい人へ</h2>
+      <ul>
+        <li>
+          <a href="https://www.soumu.go.jp/johotsusintokei/whitepaper/" target="_blank" rel="noopener">総務省 / 情報通信白書</a>
+          — AIの歴史と日本のAI政策の全体像。各年版でAIの動向が更新される
+        </li>
+        <li>
+          <a href="https://www.jdla.org/certificate/general/" target="_blank" rel="noopener">日本ディープラーニング協会（JDLA） / G検定</a>
+          — 体系的にAIを学ぶ入口。シラバスは無料で公開されており、章立てが本書の地図と同じ構造になっている
+        </li>
+        <li>
+          <a href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener">Google / Machine Learning Crash Course</a>
+          — 機械学習の基礎を演習込みで学べる無料コース
+        </li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html" class="prev"><span class="nav-label">← PREV</span>目次に戻る</a>
+      <a href="02-rulebase.html" class="next"><span class="nav-label">NEXT →</span>第2章 ルールベース</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">© 2026 AI入門コンテンツ</footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
