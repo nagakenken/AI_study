@@ -1,0 +1,65 @@
+<!--
+  章ページのテンプレート。新しい章を作るときはこのファイルをコピーして編集する。
+  プレースホルダー：
+    {CHAPTER_NUM}     例: 03
+    {CHAPTER_TITLE}   例: 機械学習
+    {READ_MIN}        例: 6
+    {PREV_HREF} {PREV_TITLE}
+    {NEXT_HREF} {NEXT_TITLE}
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第{CHAPTER_NUM}章 {CHAPTER_TITLE}｜AI入門</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-logo">AI入門 / for Newcomers</a>
+      <nav class="site-nav">
+        <a href="../index.html">目次</a>
+        <a href="../chapters/01-overview.html">全体像</a>
+        <a href="../chapters/06-case-study.html">ケース</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>第{CHAPTER_NUM}章 {CHAPTER_TITLE}</h1>
+    <div class="chapter-meta">
+      <span class="badge">Chapter {CHAPTER_NUM}</span>
+      <span>読了目安 約{READ_MIN}分</span>
+    </div>
+
+    <div class="summary-card">
+      <h3>この章の要点</h3>
+      <ul>
+        <li>要点1</li>
+        <li>要点2</li>
+        <li>要点3</li>
+      </ul>
+    </div>
+
+    <h2>セクション1</h2>
+    <p>本文…</p>
+
+    <section class="further">
+      <h2>もっと知りたい人へ</h2>
+      <ul>
+        <li><a href="#" target="_blank" rel="noopener">リンク名</a> — 概要</li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="{PREV_HREF}" class="prev"><span class="nav-label">← PREV</span>{PREV_TITLE}</a>
+      <a href="{NEXT_HREF}" class="next"><span class="nav-label">NEXT →</span>{NEXT_TITLE}</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">© 2026 AI入門コンテンツ</footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

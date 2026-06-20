@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>第2章 ルールベース｜AI入門</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a href="../index.html" class="site-logo">AI入門 / for Newcomers</a>
+      <nav class="site-nav">
+        <a href="../index.html">目次</a>
+        <a href="../chapters/01-overview.html">全体像</a>
+        <a href="../chapters/06-case-study.html">ケース</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>第2章 ルールベース</h1>
+    <div class="chapter-meta">
+      <span class="badge">Chapter 02</span>
+      <span>読了目安 約4分</span>
+    </div>
+
+    <div class="summary-card">
+      <h3>この章の要点</h3>
+      <ul>
+        <li>ルールベースは「もし〜なら」を積み重ねて判断する、もっとも歴史の長いAIの形</li>
+        <li>説明しやすく低コストだが、例外と保守の負担が一定を超えると破綻する</li>
+        <li>現代でも機械学習と組み合わせて使われる現役のアプローチ</li>
+      </ul>
+    </div>
+
+    <h2>ルールベースとは</h2>
+    <p>
+      <span class="term" data-tip="人間が事前に定義した条件分岐（IF〜THEN）で判定するAI。エキスパートシステムとも呼ばれる">ルールベース（rule-based）</span>とは、人間が前もって書いた条件分岐の集まりで判断を下す仕組みです。プログラミングを少しでもかじったことがあれば、<code>if</code>文を思い浮かべれば十分です。
+    </p>
+    <p>
+      たとえば与信審査で「年収500万円以上、勤続3年以上、過去の延滞なし、ならOK」というルールを書く。これがそのままAIの判断ロジックになります。
+    </p>
+
+    <div class="callout info">
+      <p class="callout-title">ルールベースもAIの一種です</p>
+      <p>
+        「AI＝機械学習」と思われがちですが、判断を自動化する仕組みは広くAIと呼ばれます。むしろ機械学習が普及する前は、AIといえばルールベースのことでした（1980年代の<span class="term" data-tip="特定分野の専門家の知識をルール化して判断するシステム。AIの第2次ブームを牽引した">エキスパートシステム</span>がその代表）。
+      </p>
+    </div>
+
+    <h2>身近にあるルールベースの例</h2>
+    <ul>
+      <li>勤怠システムの「打刻が23時を超えたら深夜手当を加算する」</li>
+      <li>メールフィルタで「件名に〇〇が含まれたら迷惑メール扱い」</li>
+      <li>Excelのマクロや関数で組まれた業務判定（広い意味ではAIの一種と言える）</li>
+      <li>ECサイトの「会員ランクがゴールド以上ならクーポン配布」</li>
+    </ul>
+
+    <h2>長所と短所</h2>
+
+    <table class="compare">
+      <thead>
+        <tr><th style="width:36%">観点</th><th>長所</th><th>短所</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>説明性</td>
+          <td class="good">なぜその判断になったか、ルールをたどれば即座に説明できる</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>導入コスト</td>
+          <td class="good">学習用データが不要。ルールを書くだけで動く</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>柔軟性</td>
+          <td>—</td>
+          <td class="bad">想定外のパターンに弱い。例外ルールが爆発する</td>
+        </tr>
+        <tr>
+          <td>保守性</td>
+          <td>—</td>
+          <td class="bad">ルールが数百を超えると、追加・修正のたびに矛盾が生じやすい</td>
+        </tr>
+        <tr>
+          <td>意味のゆらぎ</td>
+          <td>—</td>
+          <td class="bad">「経理経験あり」と「決算業務の経験あり」を別物として扱ってしまう</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <p class="callout-title">⚠ よくある落とし穴</p>
+      <p>
+        最初は10個のルールで十分だったのに、運用しながら例外対応を重ねるうちに数百のルールに膨らみ、誰も全体を把握できなくなる——というのが、ルールベースの典型的な末路です。クライアントが「最近うまく動かない」と感じているシステムの裏に、肥大化したルール群があることは少なくありません。
+      </p>
+    </div>
+
+    <h2>機械学習と対立するものではない</h2>
+    <p>
+      ルールベースと機械学習は「どちらか一方を選ぶ」ものではありません。実務では併用が一般的です。
+    </p>
+    <ul>
+      <li>確実に守るべき業務制約（法令、契約条件）はルールベースで担保</li>
+      <li>ゆらぎや曖昧さがある判断は機械学習にまかせる</li>
+      <li>機械学習の判定結果を、最後にルールベースで微調整する</li>
+    </ul>
+    <p>
+      <a href="06-case-study.html">第6章のケーススタディ</a>でも、既存のルールベースのロジックを捨てずに「<span class="term" data-tip="スキルや属性を体系的に分類した辞書のようなもの。ベクトル比較の物差しになる">スキルタクソノミー</span>の素材」として再利用するアプローチを紹介します。
+    </p>
+
+    <section class="further">
+      <h2>もっと知りたい人へ</h2>
+      <ul>
+        <li>
+          <a href="https://www.soumu.go.jp/johotsusintokei/whitepaper/" target="_blank" rel="noopener">総務省 / 情報通信白書</a>
+          — AIの歴史的な位置づけや日本のAI政策の全体像。第2次AIブームのエキスパートシステムも触れられている
+        </li>
+        <li>
+          <a href="https://ja.wikipedia.org/wiki/%E3%82%A8%E3%82%AD%E3%82%B9%E3%83%91%E3%83%BC%E3%83%88%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0" target="_blank" rel="noopener">Wikipedia / エキスパートシステム</a>
+          — ルールベースAIの代表例とその歴史
+        </li>
+      </ul>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="01-overview.html" class="prev"><span class="nav-label">← PREV</span>第1章 AIの全体像</a>
+      <a href="03-ml.html" class="next"><span class="nav-label">NEXT →</span>第3章 機械学習</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">© 2026 AI入門コンテンツ</footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

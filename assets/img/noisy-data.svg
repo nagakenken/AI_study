@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" font-family="-apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif">
+  <title>ノイズが混入した教師データの散布図</title>
+  <desc>真のNG群と外的要因によるノイズNG群が空間上で重なり、線で分離できない様子</desc>
+
+  <!-- 軸枠 -->
+  <rect x="80" y="60" width="640" height="360" fill="#ffffff" stroke="#57606a" stroke-width="1.5"/>
+  <text x="400" y="40" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2328">求人と人材の特徴空間（イメージ）</text>
+
+  <!-- 軸ラベル -->
+  <text x="400" y="450" text-anchor="middle" font-size="13" fill="#57606a">特徴量 X（例：スキル一致度）</text>
+  <text x="40" y="240" text-anchor="middle" font-size="13" fill="#57606a" transform="rotate(-90 40 240)">特徴量 Y（例：勤務条件適合度）</text>
+
+  <!-- 理想の分離線（点線） -->
+  <line x1="120" y1="400" x2="680" y2="100"
+        stroke="#57606a" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="690" y="100" font-size="11" fill="#57606a">理想の境界線</text>
+
+  <!-- OK群（緑●、右上） -->
+  <g fill="#1a7f37" fill-opacity="0.75">
+    <circle cx="500" cy="130" r="7"/>
+    <circle cx="540" cy="160" r="7"/>
+    <circle cx="580" cy="140" r="7"/>
+    <circle cx="620" cy="180" r="7"/>
+    <circle cx="560" cy="200" r="7"/>
+    <circle cx="600" cy="120" r="7"/>
+    <circle cx="490" cy="180" r="7"/>
+    <circle cx="650" cy="160" r="7"/>
+    <circle cx="530" cy="110" r="7"/>
+    <circle cx="600" cy="220" r="7"/>
+  </g>
+
+  <!-- 真のNG（赤×、左下に密集） -->
+  <g stroke="#cf222e" stroke-width="2.5" stroke-linecap="round">
+    <line x1="150" y1="330" x2="166" y2="346"/><line x1="166" y1="330" x2="150" y2="346"/>
+    <line x1="200" y1="360" x2="216" y2="376"/><line x1="216" y1="360" x2="200" y2="376"/>
+    <line x1="180" y1="300" x2="196" y2="316"/><line x1="196" y1="300" x2="180" y2="316"/>
+    <line x1="230" y1="340" x2="246" y2="356"/><line x1="246" y1="340" x2="230" y2="356"/>
+    <line x1="160" y1="380" x2="176" y2="396"/><line x1="176" y1="380" x2="160" y2="396"/>
+    <line x1="260" y1="310" x2="276" y2="326"/><line x1="276" y1="310" x2="260" y2="326"/>
+    <line x1="210" y1="280" x2="226" y2="296"/><line x1="226" y1="280" x2="210" y2="296"/>
+  </g>
+
+  <!-- ノイズNG（赤×、OK群と混ざる右上に散らばる） -->
+  <g stroke="#cf222e" stroke-width="2.5" stroke-linecap="round">
+    <line x1="520" y1="150" x2="536" y2="166"/><line x1="536" y1="150" x2="520" y2="166"/>
+    <line x1="570" y1="190" x2="586" y2="206"/><line x1="586" y1="190" x2="570" y2="206"/>
+    <line x1="610" y1="160" x2="626" y2="176"/><line x1="626" y1="160" x2="610" y2="176"/>
+    <line x1="480" y1="200" x2="496" y2="216"/><line x1="496" y1="200" x2="480" y2="216"/>
+    <line x1="630" y1="200" x2="646" y2="216"/><line x1="646" y1="200" x2="630" y2="216"/>
+  </g>
+
+  <!-- 注釈 -->
+  <g>
+    <rect x="100" y="240" width="180" height="56" rx="6" fill="#cf222e" fill-opacity="0.08" stroke="#cf222e" stroke-width="1.2"/>
+    <text x="190" y="262" text-anchor="middle" font-size="12" font-weight="700" fill="#9d1620">真のNG</text>
+    <text x="190" y="282" text-anchor="middle" font-size="11" fill="#1f2328">スキル不適合など</text>
+  </g>
+
+  <g>
+    <rect x="450" y="240" width="220" height="56" rx="6" fill="#bf8700" fill-opacity="0.10" stroke="#bf8700" stroke-width="1.2"/>
+    <text x="560" y="262" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5b00">ノイズNG（外的要因）</text>
+    <text x="560" y="282" text-anchor="middle" font-size="11" fill="#1f2328">家庭事情・タイミング等</text>
+  </g>
+
+  <!-- 凡例 -->
+  <g transform="translate(80,470)">
+    <circle cx="8" cy="6" r="6" fill="#1a7f37" fill-opacity="0.75"/>
+    <text x="22" y="10" font-size="11" fill="#1f2328">成約OK</text>
+    <line x1="80" y1="0" x2="96" y2="12" stroke="#cf222e" stroke-width="2.5"/>
+    <line x1="96" y1="0" x2="80" y2="12" stroke="#cf222e" stroke-width="2.5"/>
+    <text x="105" y="10" font-size="11" fill="#1f2328">NG（真のNGとノイズNGが混在）</text>
+  </g>
+</svg>
