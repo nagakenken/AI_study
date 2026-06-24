@@ -42,12 +42,12 @@
   <text x="500" y="225" font-size="15" font-weight="700" fill="#5c2fa6">深層学習</text>
   <text x="500" y="241" font-size="12" fill="#5c2fa6">Deep Learning</text>
 
-  <!-- 生成AI（小円：深層学習と一部重なり、機械学習に収まる） -->
-  <ellipse cx="680" cy="290" rx="70" ry="50"
+  <!-- 生成AI（小円：深層学習の中に完全に内包） -->
+  <ellipse cx="635" cy="290" rx="65" ry="50"
            fill="#cf222e" fill-opacity="0.16"
            stroke="#cf222e" stroke-width="2"/>
-  <text x="680" y="288" text-anchor="middle" font-size="14" font-weight="700" fill="#9d1620">生成AI</text>
-  <text x="680" y="306" text-anchor="middle" font-size="11" fill="#9d1620">Generative AI</text>
+  <text x="635" y="288" text-anchor="middle" font-size="14" font-weight="700" fill="#9d1620">生成AI</text>
+  <text x="635" y="306" text-anchor="middle" font-size="11" fill="#9d1620">Generative AI</text>
 
   <!-- 凡例 -->
   <g transform="translate(40,448)">
